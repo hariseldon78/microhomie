@@ -66,7 +66,7 @@ sign-ota:
 	yaota8266/cli.py sign micropython/ports/esp8266/build-GENERIC/firmware-ota.bin
 
 espopensdk:
-	-git clone --recursive https://github.com/ChrisMacGregor/esp-open-sdk.git
+	-git clone --recursive https://github.com/hariseldon78/esp-open-sdk.git
 	mkdir -p esp-open-sdk/xtensa-lx106-elf/bin
 	-ln -s esp-open-sdk/xtensa-lx106-elf .
 	make -C esp-open-sdk
@@ -75,6 +75,7 @@ micropython:
 	-git clone https://github.com/micropython/micropython.git
 	cd micropython; git checkout v$(MICROPYVERSION); git submodule update --init
 	make -C micropython mpy-cross
+	mkdir -p micropython/ports/unix/modules
 	make -C micropython/ports/unix
 
 	make -C micropython/ports/esp8266 submodules
