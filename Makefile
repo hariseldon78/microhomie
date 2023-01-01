@@ -75,11 +75,12 @@ micropython:
 	-git clone https://github.com/micropython/micropython.git
 	cd micropython; git checkout v$(MICROPYVERSION); git submodule update --init
 	make -C micropython mpy-cross
-	mkdir -p micropython/ports/unix/modules
-	make -C micropython/ports/unix
+# it gives error trying to freeze the modules relative to esp8266 from the manifest
+# mkdir -p micropython/ports/unix/modules
+# make -C micropython/ports/unix
 
-	make -C micropython/ports/esp8266 submodules
-	# cd micropython/ports/esp32; make submodules
+make -C micropython/ports/esp8266 submodules
+# cd micropython/ports/esp32; make submodules
 
 yaota:
 	-git clone --recursive https://github.com/jedie/yaota8266.git
