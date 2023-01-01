@@ -1,6 +1,6 @@
 export PATH := $(PWD)/esp-open-sdk/xtensa-lx106-elf/bin:$(PWD)/micropython/tools:$(PWD)/micropython/ports/unix:$(HOME)/go/bin:$(PATH)
 
-MICROPYVERSION := 1.13
+MICROPYVERSION := 1.19.1
 VERSION ?= 3.0.2
 PORT ?= /dev/ttyUSB0
 
@@ -21,7 +21,7 @@ requirements:
 	curl -s -o lib/primitives/__init__.py https://raw.githubusercontent.com/peterhinch/micropython-async/master/v3/primitives/__init__.py
 	curl -s -o lib/primitives/delay_ms.py https://raw.githubusercontent.com/peterhinch/micropython-async/master/v3/primitives/delay_ms.py
 	curl -s -o lib/primitives/pushbutton.py https://raw.githubusercontent.com/peterhinch/micropython-async/master/v3/primitives/pushbutton.py
-	curl -s -o lib/primitives/message.py https://raw.githubusercontent.com/peterhinch/micropython-async/master/v3/primitives/message.py
+	curl -s -o lib/primitives/message.py https://raw.githubusercontent.com/peterhinch/micropython-async/master/v3/threadsafe/message.py
 	curl -s -o lib/primitives/switch.py https://raw.githubusercontent.com/peterhinch/micropython-async/master/v3/primitives/switch.py
 
 firmware:
@@ -66,12 +66,14 @@ sign-ota:
 	yaota8266/cli.py sign micropython/ports/esp8266/build-GENERIC/firmware-ota.bin
 
 espopensdk:
-	-git clone --recursive https://github.com/pfalcon/esp-open-sdk.git
+	-git clone --recursive https://github.com/ChrisMacGregor/esp-open-sdk.git
+	mkdir -p esp-open-sdk/xtensa-lx106-elf/bin
+	-ln -s esp-open-sdk/xtensa-lx106-elf .
 	make -C esp-open-sdk
 
 micropython:
 	-git clone https://github.com/micropython/micropython.git
-	cd micropython; git checkout v$(MICROPYVERSION)
+	cd micropython; git checkout v$(MICROPYVERSION); git submodule update --init
 	make -C micropython mpy-cross
 	make -C micropython/ports/unix
 

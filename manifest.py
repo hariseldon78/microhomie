@@ -8,7 +8,7 @@ freeze(
         "_boot.py",
         "apa102.py",
         "flashbdev.py",
-        "neopixel.py",
+        # "neopixel.py",
         "ntptime.py",
         "port_diag.py",
     ),
